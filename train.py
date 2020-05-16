@@ -36,6 +36,11 @@ def train(type):  # we deploy two networks resnet50 and inceptionresnet_v2
     # calculate memory used for training network
     # print(get_model_memory_usage(batch_size, model))
 
+    # Quantization aware training
+    sess = tf.keras.backend.get_session()
+    tf.contrib.quantize.create_training_graph(sess.graph)
+    sess.run(tf.global_variables_initializer())
+    
     sgd = SGD(lr=1e-4, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(sgd, loss='binary_crossentropy', metrics=['accuracy'])
 
